@@ -7,6 +7,7 @@ defmodule User do
 end
 
 defmodule Example do
+require Integer
 
   use Application
 
@@ -15,25 +16,29 @@ defmodule Example do
 
   def start(_type, _args) do
     # Example.main()
-    Example.guessing_game()
+    # Example.guessing_game()
+    # Example.list_comprehension()
+    Example.functional_programming()
+
     # A supervisor is a process that supervises other processes (child processes)
     # It monitors the child processes and restarts them if they crash.
     # The :one_for_one strategy means that the supervisor only restarts the child process that crashed.
     Supervisor.start_link([], strategy: :one_for_one)
+
   end
 
   def main do
     # :hello an alertnative to a string "hello" --> Atom (constant variable)
     # IO.puts(:hello)
 
-    # name = "John"
-    # status = Enum.random([:gold, :silver, :bronze]) # Enum.random/1 returns a random element from a list
+    name = "John"
+    status = Enum.random([:gold, :silver, :bronze]) # Enum.random/1 returns a random element from a list
 
-    # case status do
-    #   :gold -> IO.puts("Congratulations, #{name}! You won the gold medal!")
-    #   :silver -> IO.puts("Congratulations, #{name}! You won the silver medal!")
-    #   :bronze -> IO.puts("Congratulations, #{name}! You won the bronze medal!")
-    # end
+    case status do
+      :gold -> IO.puts("Congratulations, #{name}! You won the gold medal!")
+      :silver -> IO.puts("Congratulations, #{name}! You won the silver medal!")
+      :bronze -> IO.puts("Congratulations, #{name}! You won the bronze medal!")
+    end
 
     # FLOATING POINT NUMBERS
 
@@ -45,8 +50,7 @@ defmodule Example do
     IO.puts("--------- Time ---------")
     time = Time.new!(16,30,0,0)
     date = Date.new!(2025, 1, 1)
-    # IO.inspect(time)
-    # IO.inspect(date)
+
     date_time = DateTime.new!(date, time, "Etc/UTC")
     IO.inspect(date_time)
     IO.puts(date_time.year)
@@ -133,5 +137,50 @@ defmodule Example do
       new_guess = IO.gets("Enter your guess: ")
       new_guess = String.trim(new_guess) |> Integer.parse() |> elem(0) # Parse the input to an integer
       play_guessing_game(new_guess, random_number)
+  end
+
+  def list_comprehension do
+    grades  = [25, 50, 75, 100]
+
+    new = for n <- grades, do: n + 5
+    # IO.inspect(new)
+
+    # Appending or Prepending data
+    new = new ++ [125] # Appending --> adds 125 to the end of the list
+    new = new ++ [150, 175] # Appending --> adds 150 and 175 to the end of the list
+    final  = [5 | new] # Prepending --> adds 5 to the beginning of the list
+    # IO.inspect(final)
+
+    even  = for n <- final, Integer.is_even(n), do: n
+    IO.inspect(even)
+  end
+
+  def sum_and_average(numbers) do
+     sum = Enum.sum(numbers)
+     avg = sum / Enum.count(numbers)
+     {sum, avg}
+  end
+
+  def print_numbers(numbers) do
+    numbers |> Enum.each(fn num -> IO.puts(num) end)
+  end
+
+  def get_numbers_by_user do
+    IO.puts("Enter numbers separated by spaces:")
+    input = IO.gets("") |> String.trim()
+    String.split(input, " ") |> Enum.map(&String.to_integer/1) # Converts each string to an integer
+    # print_numbers(numbers)
+  end
+
+  def functional_programming do
+    numbers = get_numbers_by_user()
+    # Enum.each(numbers, fn num -> IO.puts(num) end)
+
+    # result = Enum.map(numbers, &String.to_integer/1) # Converts each string to an integer | "&" capture operator
+    # print_numbers(result)
+    IO.inspect(sum_and_average(numbers))
+    {sum, avg} = sum_and_average(numbers)
+    IO.puts("Sum: #{sum}")
+    IO.puts("Average: #{avg}")
   end
 end
