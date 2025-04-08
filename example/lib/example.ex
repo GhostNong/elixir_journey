@@ -18,7 +18,7 @@ require Integer
     # Example.main()
     # Example.guessing_game()
     # Example.list_comprehension()
-    Example.functional_programming()
+    # Example.functional_programming()
 
     # A supervisor is a process that supervises other processes (child processes)
     # It monitors the child processes and restarts them if they crash.
@@ -162,13 +162,13 @@ require Integer
   end
 
   def print_numbers(numbers) do
-    numbers |> Enum.each(fn num -> IO.puts(num) end)
+    numbers |> Enum.join(" ") |> IO.puts() # [return]
   end
 
   def get_numbers_by_user do
     IO.puts("Enter numbers separated by spaces:")
     input = IO.gets("") |> String.trim()
-    String.split(input, " ") |> Enum.map(&String.to_integer/1) # Converts each string to an integer
+    String.split(input, " ") |> Enum.map(&String.to_integer/1) # Converts each string to an integer [return value]
     # print_numbers(numbers)
   end
 
